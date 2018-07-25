@@ -10,7 +10,6 @@ import { DocAPage } from '../pages/doc-a/doc-a';
 import { DocBPage } from '../pages/doc-b/doc-b';
 
 import { ApiService } from '../service/api-service';
-import { NetworkProvider } from '../service/network'
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -61,7 +60,6 @@ import { Network } from '@ionic-native/network'
     Camera,
     Network,
     ApiService,
-    NetworkProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

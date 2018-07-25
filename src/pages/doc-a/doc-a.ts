@@ -52,9 +52,12 @@ export class DocAPage {
       }else{
         this.storage.get('document').then((res) => {
           const data =  res[0];
-          this.docAData = data.data;
+          this.docAData = this.sanitized.bypassSecurityTrustHtml(data.data);
           this.title = data.title;
           console.log(this.docAData, this.title);
+          window.setTimeout(() => {
+            this.implementEvents();
+          }, 1000);
         });
       }
     });
@@ -67,50 +70,53 @@ export class DocAPage {
         this.title = res.title;
         console.log(res);
         window.setTimeout(()=> {
-
-          $(".js_finger").on("click", () => {
-            if (this.plt.is("ios")) {
-              this.checkTouchID();
-            } else {
-              this.checkFingerPrints();
-            }
-          });
-
-          $(".js_pin").on("click", () => {
-            // Test Pin
-            this.checkPin();
-          });
-
-          $(".js_uniqueid").on("click", () => {
-            // Device ID
-            this.checkDeviceID();
-          });
-
-          $(".js_nfc").on("click", () => {
-            // NFC
-            this.checkNFC();
-          });
-
-          $(".js_location").on("click", () => {
-            // Location
-            this.checkGeolocation();
-          });
-
-          // $('.tl03').on('click', () => {
-          //   // Camera
-          //   this.checkCamera();
-          // });
-
-          $(".js_storage").on("click", () => {
-            // storage
-            this.readStorage();
-          });
-        }, 1000);
+          this.implementEvents();
+        }, 2000);
       },
       (err) => {
         console.log(err);
       }
     );
+  }
+
+  implementEvents() {
+    $(".js_finger").on("click", () => {
+      if (this.plt.is("ios")) {
+        this.checkTouchID();
+      } else {
+        this.checkFingerPrints();
+      }
+    });
+
+    $(".js_pin").on("click", () => {
+      // Test Pin
+      this.checkPin();
+    });
+
+    $(".js_uniqueid").on("click", () => {
+      // Device ID
+      this.checkDeviceID();
+    });
+
+    $(".js_nfc").on("click", () => {
+      // NFC
+      this.checkNFC();
+    });
+
+    $(".js_location").on("click", () => {
+      // Location
+      this.checkGeolocation();
+    });
+
+    // $('.tl03').on('click', () => {
+    //   // Camera
+    //   this.checkCamera();
+    // });
+
+    $(".js_storage").on("click", () => {
+      // storage
+      this.readStorage();
+    });
   }
 
   checkTouchID() {
@@ -188,12 +194,12 @@ export class DocAPage {
   checkNFC () {
     console.log('Check NFC');
     this.nfc.addNdefListener(() => {
-      console.log('successfully attached ndef listener');
+      this.showAlert('Success', 'Attached ndef listener');
     }, (err) => {
-      console.log('error attaching ndef listener', err);
+      console.log('Error', 'Attaching ndef listener', err);
     }).subscribe((event) => {
-      console.log('received ndef message. the tag contains: ', event.tag);
-      console.log('decoded tag id', this.nfc.bytesToHexString(event.tag.id));
+      this.showAlert('received ndef message. the tag contains: ', event.tag);
+      this.showAlert('decoded tag id', this.nfc.bytesToHexString(event.tag.id));
 
       let message: any = this.ndef.textRecord;
       this.nfc.share([message]).then(this.onSuccess).catch(this.onError);
@@ -213,18 +219,16 @@ export class DocAPage {
     this.geolocation.getCurrentPosition().then((resp) => {
       let lat =  resp.coords.latitude;
       let lng =  resp.coords.longitude;
-      this.showAlert('position', lat + ' ,' + lng);
+      this.showAlert("Position", "Lat: " + lat + " Lng: " + lng);
     }).catch((error) => {
       this.showAlert('Error getting location', error);
     });
 
-    let watch = this.geolocation.watchPosition();
-    watch.subscribe((data) => {
-      // data can be a set of coordinates, or an error (if an error occurred).
-      // data.coords.latitude
-      // data.coords.longitude
-      this.showAlert('data', data.coords);
-    });
+    // let watch = this.geolocation.watchPosition();
+    // watch.subscribe((data) => {
+    //   console.log( 'location', data.coords.latitude, data.coords.longitude);
+    //   this.showAlert('Your Location', 'Lat: ' + data.coords.latitude + ' Lng: '+ data.coords.longitude);
+    // });
   }
 
   readStorage() {

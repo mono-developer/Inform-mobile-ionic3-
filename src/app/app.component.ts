@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
-import { Platform, Events } from 'ionic-angular';
+import {
+  Platform,
+  Events,
+  ToastController
+} from "ionic-angular";
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from "@ionic/storage";
 
 import { TabsPage } from '../pages/tabs/tabs';
-import { NetworkProvider } from "../service/network";
 import { Network } from '@ionic-native/network';
 
 
@@ -22,39 +25,41 @@ export class MyApp {
     public splashScreen: SplashScreen,
     public events: Events,
     public storage: Storage,
-    public networkStatus: NetworkProvider,
-    public network: Network
+    public network: Network,
+    public toastCtrl: ToastController
   ) {
     platform.ready().then(() => {
-      this.network.onConnect().subscribe(() => {
-        alert('network connected!');
-        setTimeout(() => {
-          if (this.network.type === 'wifi') {
-            alert('we got a wifi connection, woohoo!');
-          }
-        }, 3000);
-      });
-
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
 
       this.initializeApp();
     });
   }
 
   initializeApp(): void {
-    /* Check networkStatus */
-    this.networkStatus.initializeNetworkEvents()
-    this.events.subscribe('network:offline', () => {
-      alert('network:offline ==> ' + this.networkStatus.getNetworkType());
-      this.storage.set('network', 0);
-    })
-    this.events.subscribe('network:online', () => {
-      alert('network:online ==> ' + this.networkStatus.getNetworkType());
+    this.network.onDisconnect().subscribe(() => {
+      this.showToast( "Network was disconnected!");
+      this.storage.set("network", 0);
+    });
+    this.network.onConnect().subscribe(() => {
+      this.showToast("Network was connected!");
       this.storage.set("network", 1);
-    })
+    });
 
-    /* Ionic stuff */
-    this.statusBar.styleDefault();
-    this.splashScreen.hide();
+    if (this.network.type === "wifi") {
+      this.storage.set("network", 1);
+    } else {
+      console.log("Please Check your network and try again");
+      this.storage.set("network", 0);
+    }
   }
 
+  showToast(message) {
+    const toast = this.toastCtrl.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom'
+    });
+    toast.present();
+  }
 }
