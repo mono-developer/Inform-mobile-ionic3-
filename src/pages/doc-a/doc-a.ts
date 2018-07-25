@@ -125,8 +125,8 @@ export class DocAPage {
         (res) => {
           this.touchId.verifyFingerprint('Scan your fingerprint please')
             .then(
-              res => console.log('Ok', res),
-              err => console.error('Error', err)
+              res => this.showAlert('Success', 'TouchID is Available'),
+              err => console.error('Error', 'TouchID is not Available')
             );
         },
         err => console.error('TouchID is not available', err)
