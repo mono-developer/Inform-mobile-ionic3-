@@ -1,14 +1,10 @@
 import { Component } from '@angular/core';
 import {
-  Platform,
-  Events,
-  ToastController
+  Platform, ToastController
 } from "ionic-angular";
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from "@ionic/storage";
-
-import { TabsPage } from '../pages/tabs/tabs';
 import { Network } from '@ionic-native/network';
 
 
@@ -17,13 +13,12 @@ import { Network } from '@ionic-native/network';
   templateUrl: "app.html"
 })
 export class MyApp {
-  rootPage: any = TabsPage;
+  rootPage: any = 'TabsPage';
 
   constructor(
     platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    public events: Events,
     public storage: Storage,
     public network: Network,
     public toastCtrl: ToastController
@@ -31,7 +26,6 @@ export class MyApp {
     platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-
       this.initializeApp();
     });
   }

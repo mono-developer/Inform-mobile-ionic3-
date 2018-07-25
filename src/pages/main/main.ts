@@ -49,4 +49,8 @@ export class MainPage {
     );
   }
 
+  goPage(item) {
+    this.navCtrl.push('DocumentPage', { item: item});
+  }
+
 }

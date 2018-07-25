@@ -16,7 +16,7 @@
 <ion-content padding>
 
   <ion-list>
-    <ion-item *ngFor="let item of mainData">
+    <ion-item *ngFor="let item of mainData" (click)="goPage(item)">
       <ion-thumbnail item-start>
         <img src="assets/imgs/images.png">
       </ion-thumbnail>

@@ -3,11 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { MyApp } from './app.component';
-import { TabsPage } from '../pages/tabs/tabs';
-import { LoginPage } from '../pages/login/login';
-import { MainPage } from '../pages/main/main';
-import { DocAPage } from '../pages/doc-a/doc-a';
-import { DocBPage } from '../pages/doc-b/doc-b';
 
 import { ApiService } from '../service/api-service';
 
@@ -26,11 +21,6 @@ import { Network } from '@ionic-native/network'
 @NgModule({
   declarations: [
     MyApp,
-    LoginPage,
-    MainPage,
-    DocAPage,
-    DocBPage,
-    TabsPage
   ],
   imports: [
     HttpClientModule,
@@ -41,11 +31,6 @@ import { Network } from '@ionic-native/network'
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    LoginPage,
-    MainPage,
-    DocAPage,
-    DocBPage,
-    TabsPage
   ],
   providers: [
     StatusBar,
