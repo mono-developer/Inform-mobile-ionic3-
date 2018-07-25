@@ -194,7 +194,7 @@ export class DocumentPage {
     this.nfc.addNdefListener(() => {
       this.showAlert('Success', 'Attached ndef listener');
     }, (err) => {
-      console.log('Error', 'Attaching ndef listener', err);
+      this.showAlert('Error', 'Attaching ndef listener');
     }).subscribe((event) => {
       this.showAlert('received ndef message. the tag contains: ', event.tag);
       this.showAlert('decoded tag id', this.nfc.bytesToHexString(event.tag.id));
