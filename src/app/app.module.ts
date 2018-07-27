@@ -16,7 +16,8 @@ import { NFC, Ndef } from '@ionic-native/nfc';
 import { Geolocation } from '@ionic-native/geolocation';
 import { IonicStorageModule } from '@ionic/storage';
 import { Camera } from '@ionic-native/camera';
-import { Network } from '@ionic-native/network'
+import { Network } from '@ionic-native/network';
+import { PinDialog } from "@ionic-native/pin-dialog";
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { Network } from '@ionic-native/network'
     Geolocation,
     Camera,
     Network,
+    PinDialog,
     ApiService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
